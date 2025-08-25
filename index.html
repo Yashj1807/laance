@@ -1,0 +1,1918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finwise - Your Personal Finance Friend | India's Smart Financial App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .feature-card {
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .floating-element {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .chat-bubble-user {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .chat-bubble-bot {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .typing-indicator {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .demo-timer {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffa500 100%);
+            animation: timerPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes timerPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .hero-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* Custom Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            pointer-events: none;
+        }
+        .modal.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 2.5rem; /* Increased padding */
+            border-radius: 1.5rem; /* More rounded corners */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            position: relative;
+            max-width: 90%;
+            width: 400px; /* Fixed width for better appearance */
+            transform: translateY(-20px);
+            transition: transform 0.3s ease-in-out;
+        }
+        .modal.show .modal-content {
+            transform: translateY(0);
+        }
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2rem; /* Larger close button */
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 bg-white/90 backdrop-blur-md z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">₹</span>
+                    </div>
+                    <span class="text-2xl font-bold gradient-text">Finwise</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#features" class="text-gray-700 hover:text-purple-600 transition-colors">Features</a>
+                    <a href="#demo" class="text-gray-700 hover:text-purple-600 transition-colors">Demo</a>
+                    <a href="#dashboard" class="text-gray-700 hover:text-purple-600 transition-colors">Dashboard</a>
+                    <a href="#product-comparison" class="text-gray-700 hover:text-purple-600 transition-colors">Products</a>
+                    <a href="#market-insights" class="text-gray-700 hover:text-purple-600 transition-colors">Market</a>
+                    <a href="#pricing" class="text-gray-700 hover:text-purple-600 transition-colors">Pricing</a>
+                    <a href="#download" class="text-gray-700 hover:text-purple-600 transition-colors">Download</a>
+                    <button id="nav-try-demo-btn" class="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all">
+                        Try Demo
+                    </button>
+                    <!-- Premium Toggle Button (for testing) -->
+                    <button id="premium-toggle-btn" class="bg-yellow-500 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all">
+                        Toggle Premium (Dev)
+                    </button>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 bg-black/50 z-40 hidden">
+        <div class="fixed right-0 top-0 h-full w-64 bg-white p-6">
+            <div class="flex justify-end mb-8">
+                <button id="close-mobile-menu" class="text-gray-500">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="space-y-6">
+                <a href="#features" class="block text-gray-700 hover:text-purple-600">Features</a>
+                <a href="#demo" class="block text-gray-700 hover:text-purple-600">Demo</a>
+                <a href="#dashboard" class="block text-gray-700 hover:text-purple-600">Dashboard</a>
+                <a href="#product-comparison" class="block text-gray-700 hover:text-purple-600">Products</a>
+                <a href="#market-insights" class="block text-gray-700 hover:text-purple-600">Market</a>
+                <a href="#pricing" class="block text-gray-700 hover:text-purple-600">Pricing</a>
+                <a href="#download" class="block text-gray-700 hover:text-purple-600">Download</a>
+                <button id="mobile-try-demo-btn" class="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white py-3 rounded-full">
+                    Try Demo
+                </button>
+                <button id="mobile-premium-toggle-btn" class="w-full bg-yellow-500 text-white py-3 rounded-full">
+                    Toggle Premium (Dev)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="pt-20 pb-16 gradient-bg hero-pattern">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 text-white">
+                    <h1 class="text-5xl lg:text-7xl font-bold mb-6 leading-tight">
+                        Your Personal
+                        <span class="block text-yellow-300">Finance Friend</span>
+                    </h1>
+                    <p class="text-xl lg:text-2xl mb-8 opacity-90">
+                        India's smartest AI-powered financial app. Track expenses, get personalized recommendations, and save 10-12% on your monthly budget.
+                    </p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <button onclick="scrollToDemo()" class="bg-white text-purple-600 px-8 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all">
+                            Try AI Demo (2 mins free)
+                        </button>
+                        <button class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-purple-600 transition-all">
+                            Download App
+                        </button>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 mt-12 lg:mt-0">
+                    <div class="floating-element">
+                        <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8 shadow-2xl">
+                            <div class="bg-white rounded-2xl p-6">
+                                <h3 class="text-gray-800 font-bold text-xl mb-4">Monthly Overview</h3>
+                                <div class="space-y-4">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-600">Income</span>
+                                        <span id="overview-income" class="text-green-600 font-bold">₹0</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-600">Expenses</span>
+                                        <span id="overview-expenses" class="text-red-600 font-bold">₹0</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-600">Savings</span>
+                                        <span id="overview-savings" class="text-blue-600 font-bold">₹0</span>
+                                    </div>
+                                    <div class="bg-gradient-to-r from-green-400 to-blue-500 text-white p-3 rounded-lg text-center">
+                                        <span id="overview-ai-recommendation" class="text-sm">AI Recommendation: Provide your data for insights!</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl lg:text-5xl font-bold gradient-text mb-6">Why Choose Finwise?</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Built specifically for Indian families with AI-powered insights and personalized recommendations
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- AI-Powered Analysis -->
+                <div class="feature-card bg-gradient-to-br from-purple-50 to-blue-50 p-8 rounded-3xl border border-purple-100">
+                    <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-2xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">AI-Powered Analysis</h3>
+                    <p class="text-gray-600 mb-6">Smart categorization of expenses with priority-based recommendations tailored for Indian households.</p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Essential vs Non-essential tracking
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Family-based recommendations
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- India-Specific Design -->
+                <div class="feature-card bg-gradient-to-br from-green-50 to-emerald-50 p-8 rounded-3xl border border-green-100">
+                    <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Made for India</h3>
+                    <p class="text-gray-600 mb-6">Designed specifically for Indian families with local preferences and cultural considerations.</p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Diet preferences (Veg/Non-veg/Jain)
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            UPI payment integration
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Smart Savings -->
+                <div class="feature-card bg-gradient-to-br from-orange-50 to-red-50 p-8 rounded-3xl border border-orange-100">
+                    <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Smart Savings</h3>
+                    <p class="text-gray-600 mb-6">Save 10-12% on monthly expenses with intelligent product comparisons and budget optimization.</p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Product price comparison
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Emergency fund calculator
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard/User Profile Section -->
+    <section id="dashboard" class="py-20 bg-gradient-to-br from-blue-50 to-indigo-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl lg:text-5xl font-bold gradient-text mb-6">Your Financial Dashboard</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Provide your financial data to get personalized insights and recommendations.
+                </p>
+            </div>
+
+            <div class="max-w-4xl mx-auto bg-white p-8 rounded-3xl shadow-xl">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6">Input Your Details</h3>
+                <form id="financial-data-form" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="monthlySalary" class="block text-gray-700 text-sm font-semibold mb-2">Monthly Salary (₹)</label>
+                        <input type="number" id="monthlySalary" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="e.g., 50000" required>
+                    </div>
+                    <div>
+                        <label for="familyMembers" class="block text-gray-700 text-sm font-semibold mb-2">Number of Family Members</label>
+                        <input type="number" id="familyMembers" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="e.g., 4" required>
+                    </div>
+                    <div>
+                        <label for="emiBills" class="block text-gray-700 text-sm font-semibold mb-2">Total EMIs (₹)</label>
+                        <input type="number" id="emiBills" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="e.g., 15000" required>
+                    </div>
+                    <div>
+                        <label for="monthlySavings" class="block text-gray-700 text-sm font-semibold mb-2">Monthly Savings (Excluding EMIs) (₹)</label>
+                        <input type="number" id="monthlySavings" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="e.g., 10000" required>
+                    </div>
+                    <div>
+                        <label for="rationsBill" class="block text-gray-700 text-sm font-semibold mb-2">Monthly Rations Bill (₹)</label>
+                        <input type="number" id="rationsBill" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="e.g., 8000" required>
+                    </div>
+                    <div>
+                        <label for="travelBill" class="block text-gray-700 text-sm font-semibold mb-2">Monthly Travelling Bill (₹)</label>
+                        <input type="number" id="travelBill" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="e.g., 3000" required>
+                    </div>
+                    <div>
+                        <label for="electricityBill" class="block text-gray-700 text-sm font-semibold mb-2">Electricity Bill (₹)</label>
+                        <input type="number" id="electricityBill" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="e.g., 2000" required>
+                    </div>
+                    <div>
+                        <label for="waterBill" class="block text-gray-700 text-sm font-semibold mb-2">Water Bill (₹)</label>
+                        <input type="number" id="waterBill" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="e.g., 500" required>
+                    </div>
+                    <div>
+                        <label for="internetBill" class="block text-gray-700 text-sm font-semibold mb-2">Internet Bill (₹)</label>
+                        <input type="number" id="internetBill" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="e.g., 1000" required>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="otherExpenses" class="block text-gray-700 text-sm font-semibold mb-2">Other Monthly Expenses (₹)</label>
+                        <input type="number" id="otherExpenses" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="e.g., 4000" required>
+                    </div>
+                    <div class="md:col-span-2 mt-4">
+                        <h4 class="text-lg font-bold text-gray-800 mb-4">Custom Family Preferences</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="dietPreference" class="block text-gray-700 text-sm font-semibold mb-2">Dietary Preference</label>
+                                <select id="dietPreference" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                    <option value="none">Select One</option>
+                                    <option value="veg">Vegetarian</option>
+                                    <option value="non-veg">Non-Vegetarian</option>
+                                    <option value="jain">Jain</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="lifestyle" class="block text-gray-700 text-sm font-semibold mb-2">Lifestyle</label>
+                                <select id="lifestyle" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                    <option value="moderate">Moderate</option>
+                                    <option value="frugal">Frugal</option>
+                                    <option value="luxury">Luxury</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2 text-center mt-6">
+                        <button type="submit" class="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all">
+                            Save Financial Data
+                        </button>
+                    </div>
+                </form>
+
+                <div id="financial-summary" class="mt-12 p-6 bg-gradient-to-br from-indigo-50 to-blue-50 rounded-2xl shadow-inner hidden">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Your Financial Summary</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
+                        <div><span class="font-semibold">Monthly Income:</span> <span id="summary-income">₹0</span></div>
+                        <div><span class="font-semibold">Total Expenses:</span> <span id="summary-expenses">₹0</span></div>
+                        <div><span class="font-semibold">Net Savings:</span> <span id="summary-savings">₹0</span></div>
+                        <div><span class="font-semibold">Emergency Fund Target:</span> <span id="emergency-fund-target">₹0</span></div>
+                        <div class="md:col-span-2">
+                            <span class="font-semibold">AI Insights:</span> <span id="ai-summary-insights">Please provide your data for insights.</span>
+                        </div>
+                        <div class="md:col-span-2 mt-4">
+                            <h4 class="text-lg font-bold text-gray-800 mb-2">Expense Categorization:</h4>
+                            <ul id="expense-categories" class="list-disc list-inside text-gray-600">
+                                <!-- Expenses will be listed here -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Chatbot Demo Section -->
+    <section id="demo" class="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl lg:text-5xl font-bold gradient-text mb-6">Experience AI Financial Advisor</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+                    Try our premium AI chatbot for free! Get 2 minutes of personalized financial advice to see how Finwise can transform your financial decisions.
+                </p>
+                
+                <!-- Demo Timer -->
+                <div id="demo-timer" class="demo-timer text-white px-6 py-3 rounded-full inline-flex items-center space-x-2 mb-8">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span id="timer-text">Demo Time: 2:00</span>
+                </div>
+            </div>
+
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
+                    <!-- Chat Header -->
+                    <div class="bg-gradient-to-r from-purple-500 to-blue-500 text-white p-6">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z"></path>
+                                    <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold">Finwise AI Advisor</h3>
+                                <p class="text-purple-100"><span id="chat-status">Free Trial</span> Financial Assistant</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat Messages -->
+                    <div id="chat-messages" class="h-96 overflow-y-auto p-6 bg-gray-50">
+                        <div class="space-y-4">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z"></path>
+                                    </svg>
+                                </div>
+                                <div class="chat-bubble-bot text-white p-4 rounded-2xl rounded-tl-sm max-w-sm">
+                                    <p>Hi there! 👋 I'm your premium AI financial advisor. I can help you make smart financial decisions, analyze your spending patterns, and provide personalized recommendations. What would you like to know about your finances today?</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat Input -->
+                    <div class="p-6 border-t">
+                        <div class="flex space-x-3">
+                            <input 
+                                id="chat-input" 
+                                type="text" 
+                                placeholder="Ask me about budgeting, savings, investments, or any financial decision..."
+                                class="flex-1 p-4 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                disabled
+                            >
+                            <button 
+                                id="send-btn"
+                                class="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-4 rounded-2xl font-semibold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                disabled
+                            >
+                                Send
+                            </button>
+                        </div>
+                        <div class="flex justify-between items-center mt-4">
+                            <button 
+                                id="start-demo-btn"
+                                class="bg-green-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-green-600 transition-all"
+                            >
+                                🚀 Start Free Demo
+                            </button>
+                            <div class="text-sm text-gray-500">
+                                Try premium features for 2 minutes • No signup required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Demo Features (reused, but logic for premium will be applied) -->
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-2xl shadow-lg">
+                        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-gray-800 mb-2">Impulse Control</h3>
+                        <p class="text-gray-600 text-sm">Get real-time advice to avoid unnecessary purchases and make smarter decisions.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-lg">
+                        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-gray-800 mb-2">Budget Analysis</h3>
+                        <p class="text-gray-600 text-sm">Analyze your spending patterns and get personalized recommendations.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-lg">
+                        <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-gray-800 mb-2">Investment Guidance</h3>
+                        <p class="text-gray-600 text-sm">Get tailored investment advice based on your financial goals and risk profile.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Comparison Section (Premium Feature) -->
+    <section id="product-comparison" class="py-20 bg-gradient-to-br from-purple-50 to-pink-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl lg:text-5xl font-bold gradient-text mb-6">Smart Product Comparison</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Compare products across brands to find the best deals and save 10-12% (Premium Feature).
+                </p>
+            </div>
+
+            <div class="max-w-4xl mx-auto bg-white p-8 rounded-3xl shadow-xl">
+                <div id="product-comparison-content" class="text-center text-gray-600">
+                    <p class="mb-6 text-lg">Unlock this feature by upgrading to Finwise Premium!</p>
+                    <button onclick="document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });" class="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all">
+                        Upgrade to Premium
+                    </button>
+                </div>
+
+                <div id="product-comparison-premium" class="hidden">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Compare Products</h3>
+                    <div class="flex flex-col sm:flex-row gap-4 mb-6">
+                        <input type="text" id="product-search-input" class="flex-1 p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="e.g., washing machine, smartphone, atta (flour)">
+                        <button id="compare-products-btn" class="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all">
+                            Compare
+                        </button>
+                    </div>
+                    <div id="product-comparison-results" class="bg-gray-50 p-6 rounded-xl min-h-[200px] flex items-center justify-center text-gray-700 text-center">
+                        Enter a product to see comparisons (e.g., "washing machine").
+                        <div id="product-comparison-loading" class="hidden flex items-center justify-center">
+                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500 mr-3"></div>
+                            Comparing products...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Real-time Market Insight Section (Premium Feature) -->
+    <section id="market-insights" class="py-20 bg-gradient-to-br from-yellow-50 to-orange-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl lg:text-5xl font-bold gradient-text mb-6">Real-time Market Insights</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Get up-to-the-minute data on gold, funds, interest rates, and more (Premium Feature).
+                </p>
+            </div>
+
+            <div class="max-w-4xl mx-auto bg-white p-8 rounded-3xl shadow-xl">
+                <div id="market-insights-content" class="text-center text-gray-600">
+                    <p class="mb-6 text-lg">Unlock this feature by upgrading to Finwise Premium!</p>
+                    <button onclick="document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });" class="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all">
+                        Upgrade to Premium
+                    </button>
+                </div>
+
+                <div id="market-insights-premium" class="hidden">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Market Data Today</h3>
+                    <div class="flex flex-col sm:flex-row gap-4 mb-6">
+                        <input type="text" id="market-search-input" class="flex-1 p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="e.g., gold price India, Sensex today, SBI interest rates">
+                        <button id="fetch-market-data-btn" class="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all">
+                            Fetch Data
+                        </button>
+                    </div>
+                    <div id="market-data-results" class="bg-gray-50 p-6 rounded-xl min-h-[200px] flex items-center justify-center text-gray-700 text-center">
+                        Enter a query to get market insights (e.g., "gold price today").
+                        <div id="market-data-loading" class="hidden flex items-center justify-center">
+                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500 mr-3"></div>
+                            Fetching market data...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl lg:text-5xl font-bold gradient-text mb-6">Choose Your Plan</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Start free or unlock premium features to maximize your savings
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Free Plan -->
+                <div class="bg-white border-2 border-gray-200 rounded-3xl p-8 hover:shadow-lg transition-all">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">Free</h3>
+                        <div class="text-4xl font-bold text-gray-800 mb-4">₹0</div>
+                        <p class="text-gray-600">Perfect to get started</p>
+                    </div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Basic expense tracking
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Monthly budget overview
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Basic AI recommendations
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Emergency fund calculator
+                        </li>
+                    </ul>
+                    <button class="w-full border-2 border-gray-300 text-gray-700 py-4 rounded-2xl font-semibold hover:border-gray-400 transition-all">
+                        Get Started Free
+                    </button>
+                </div>
+
+                <!-- Premium Monthly -->
+                <div class="bg-gradient-to-br from-purple-50 to-blue-50 border-2 border-purple-200 rounded-3xl p-8 relative hover:shadow-xl transition-all">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-2 rounded-full text-sm font-semibold">
+                        Most Popular
+                    </div>
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">Premium Monthly</h3>
+                        <div class="text-4xl font-bold gradient-text mb-4">₹<span id="premium-monthly-price">199</span></div>
+                        <p class="text-gray-600">per month</p>
+                    </div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Everything in Free
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            AI Financial Advisor Chatbot
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Smart Product Comparison
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Real-time Market Data
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Save 10-12% on expenses
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Push Notifications
+                        </li>
+                    </ul>
+                    <button class="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white py-4 rounded-2xl font-semibold hover:shadow-lg transition-all" onclick="openPaymentModal('monthly')">
+                        Subscribe Monthly
+                    </button>
+                </div>
+
+                <!-- Premium Yearly -->
+                <div class="bg-white border-2 border-gray-200 rounded-3xl p-8 hover:shadow-lg transition-all">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">Premium Yearly</h3>
+                        <div class="text-4xl font-bold text-gray-800 mb-2">₹<span id="premium-yearly-price">1999</span></div>
+                        <div class="text-green-600 font-semibold mb-4">Save 16% • ₹<span id="premium-yearly-equivalent-monthly">166</span>/month</div>
+                        <p class="text-gray-600">Best value for families</p>
+                    </div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Everything in Premium Monthly
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Priority customer support
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Advanced analytics
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Family sharing (up to 4 members)
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Investment portfolio tracking
+                        </li>
+                    </ul>
+                    <button class="w-full bg-gray-800 text-white py-4 rounded-2xl font-semibold hover:bg-gray-900 transition-all" onclick="openPaymentModal('yearly')">
+                        Choose Yearly Plan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="py-20 gradient-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center text-white">
+                <h2 class="text-4xl lg:text-5xl font-bold mb-6">Ready to Transform Your Finances?</h2>
+                <p class="text-xl mb-12 opacity-90 max-w-3xl mx-auto">
+                    Join thousands of Indian families who have already started saving smarter with Finwise
+                </p>
+                
+                <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6 mb-12">
+                    <!-- App Store Button -->
+                    <div class="bg-black text-white px-8 py-4 rounded-2xl flex items-center space-x-3 hover:bg-gray-800 transition-all cursor-pointer">
+                        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                        </svg>
+                        <div>
+                            <div class="text-xs">Download on the</div>
+                            <div class="text-lg font-semibold">App Store</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Google Play Button -->
+                    <div class="bg-black text-white px-8 py-4 rounded-2xl flex items-center space-x-3 hover:bg-gray-800 transition-all cursor-pointer">
+                        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/>
+                        </svg>
+                        <div>
+                            <div class="text-xs">Get it on</div>
+                            <div class="text-lg font-semibold">Google Play</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-center space-x-8 text-white/80">
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>100% Free to Start</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>No Credit Card Required</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Secure & Private</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Company Info -->
+                <div>
+                    <div class="flex items-center space-x-2 mb-6">
+                        <div class="w-10 h-10 bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl flex items-center justify-center">
+                            <span class="text-white font-bold text-xl">₹</span>
+                        </div>
+                        <span class="text-2xl font-bold">Finwise</span>
+                    </div>
+                    <p class="text-gray-400 mb-6">Your Personal Finance Friend. Making financial management simple for every Indian family.</p>
+                    <div class="flex space-x-4">
+                        <div class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 cursor-pointer">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+                        </div>
+                        <div class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 cursor-pointer">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/></svg>
+                        </div>
+                        <div class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 cursor-pointer">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.749-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 23.998 12.017 24c6.624 0 11.99-5.367 11.99-11.987C24.007 5.367 18.641.001 12.017.001z"/></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Product</h3>
+                    <ul class="space-y-4 text-gray-400">
+                        <li><a href="#features" class="hover:text-white transition-colors">Features</a></li>
+                        <li><a href="#pricing" class="hover:text-white transition-colors">Pricing</a></li>
+                        <li><a href="#demo" class="hover:text-white transition-colors">AI Demo</a></li>
+                        <li><a href="#download" class="hover:text-white transition-colors">Download</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">API</a></li>
+                    </ul>
+                </div>
+
+                <!-- Support -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Support</h3>
+                    <ul class="space-y-4 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Help Center</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Security</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Contact</h3>
+                    <div class="space-y-4 text-gray-400">
+                        <div class="flex items-center space-x-3">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            <span>support@finwise.in</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                            </svg>
+                            <span>+91 9506344448</span>
+                        </div>
+                        <div class="text-sm">
+                            <p class="mb-2 font-medium text-white">For Sponsorship:</p>
+                            <p>Business partnerships and sponsorship opportunities available. Contact us at <a href="mailto:sponsorship@finwise.in" class="text-purple-300 hover:text-white">sponsorship@finwise.in</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-8 mt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-400 text-sm">© 2025 Finwise. All rights reserved. Made with ❤️ in India</p>
+                    <div class="flex space-x-6 text-sm text-gray-400 mt-4 md:mt-0">
+                        <a href="#" class="hover:text-white transition-colors">Privacy</a>
+                        <a href="#" class="hover:text-white transition-colors">Terms</a>
+                        <a href="#" class="hover:text-white transition-colors">Cookies</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closePaymentModal()">&times;</span>
+            <h3 class="text-3xl font-bold gradient-text mb-6 text-center">Complete Your Subscription</h3>
+            <div class="text-center mb-8">
+                <p class="text-lg text-gray-700">You are subscribing to <span id="payment-plan-text" class="font-semibold text-purple-600"></span></p>
+                <p class="text-2xl font-bold text-gray-800 mt-2">Amount: <span id="payment-amount" class="text-green-600">₹0</span></p>
+            </div>
+            
+            <div class="space-y-4">
+                <p class="text-gray-700 text-center font-medium">Scan & Pay via UPI</p>
+                <div class="flex justify-center items-center p-4 bg-gray-100 rounded-lg">
+                    <img src="https://placehold.co/150x150/E0BBE4/FFFFFF?text=UPI+QR" alt="UPI QR Code" class="w-36 h-36 rounded-md border border-gray-300">
+                </div>
+                <div class="text-center text-lg font-semibold text-gray-800">
+                    UPI ID: <span class="text-purple-600">9506344448@slc</span>
+                </div>
+                <p class="text-gray-700 text-center text-sm">You can also pay via Google Pay or Paytm using this UPI ID.</p>
+                <div class="flex justify-center gap-4 mt-6">
+                    <button class="bg-blue-600 text-white px-6 py-3 rounded-full flex items-center space-x-2 hover:bg-blue-700 transition-colors">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Google_Pay_Logo_%282018%29.png/800px-Google_Pay_Logo_%282018%29.png" alt="Google Pay" class="h-5 w-auto">
+                        <span>Google Pay</span>
+                    </button>
+                    <button class="bg-blue-800 text-white px-6 py-3 rounded-full flex items-center space-x-2 hover:bg-blue-900 transition-colors">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Paytm_Logo.png/800px-Paytm_Logo.png" alt="Paytm" class="h-5 w-auto">
+                        <span>Paytm</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_KEY = ""; // If you want to use models other than gemini-2.5-flash-preview-05-20, provide an API key here. Otherwise, leave this as-is.
+        const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${API_KEY}`;
+        const GOOGLE_SEARCH_TOOL_CODE = `
+            function google_search(query) {
+                return new Promise(async (resolve, reject) => {
+                    const response = await fetch('/your-backend-search-endpoint', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ query: query })
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        resolve(data.results); // Assuming backend returns structured results
+                    } else {
+                        reject('Failed to fetch search results from backend.');
+                    }
+                });
+            }
+            // This is a placeholder. In a real application, you would need a backend
+            // to safely call a search API (like Google Custom Search, SerpAPI, etc.)
+            // as direct client-side calls to such APIs are often blocked by CORS
+            // or require API keys to be exposed.
+        `;
+
+        // --- Global Variables ---
+        let demoTimeRemaining = 120; // 2 minutes in seconds
+        let demoActive = false;
+        let demoTimer;
+        let premiumActive = localStorage.getItem('finwise_premium') === 'true'; // Check local storage for premium status
+
+        const PREMIUM_MONTHLY_PRICE = 199;
+        const PREMIUM_YEARLY_PRICE = 1999;
+        const PREMIUM_YEARLY_EQUIVALENT_MONTHLY = Math.round(PREMIUM_YEARLY_PRICE / 12);
+        const UPI_ID = "9506344448@slc";
+
+        // Dummy user financial data (will be updated by form)
+        let userFinancialData = JSON.parse(localStorage.getItem('userFinancialData')) || {
+            monthlySalary: 0,
+            emiBills: 0,
+            monthlySavings: 0,
+            rationsBill: 0,
+            travelBill: 0,
+            electricityBill: 0,
+            waterBill: 0,
+            internetBill: 0,
+            otherExpenses: 0,
+            familyMembers: 1,
+            dietPreference: 'none',
+            lifestyle: 'moderate'
+        };
+
+        // --- UI Update Functions ---
+
+        /**
+         * Updates the UI elements related to the premium status.
+         * Shows/hides premium-only content and updates text.
+         */
+        function updatePremiumUI() {
+            document.getElementById('chat-status').textContent = premiumActive ? 'Premium' : 'Free Trial';
+            const premiumContentElements = [
+                document.getElementById('product-comparison-content'),
+                document.getElementById('market-insights-content')
+            ];
+            const premiumFeatureElements = [
+                document.getElementById('product-comparison-premium'),
+                document.getElementById('market-insights-premium')
+            ];
+
+            if (premiumActive) {
+                premiumContentElements.forEach(el => el && el.classList.add('hidden'));
+                premiumFeatureElements.forEach(el => el && el.classList.remove('hidden'));
+            } else {
+                premiumContentElements.forEach(el => el && el.classList.remove('hidden'));
+                premiumFeatureElements.forEach(el => el && el.classList.add('hidden'));
+            }
+        }
+
+        /**
+         * Toggles the premium status for development/testing purposes.
+         */
+        function togglePremiumStatus() {
+            premiumActive = !premiumActive;
+            localStorage.setItem('finwise_premium', premiumActive);
+            alert(`Premium status: ${premiumActive ? 'Active' : 'Inactive'}. Please reload the page if any UI doesn't update immediately.`);
+            updatePremiumUI();
+            updateFinancialSummary(); // Recalculate AI insights based on premium status
+        }
+
+        /**
+         * Populates the pricing section with dynamic values.
+         */
+        function populatePricing() {
+            document.getElementById('premium-monthly-price').textContent = PREMIUM_MONTHLY_PRICE.toLocaleString('en-IN');
+            document.getElementById('premium-yearly-price').textContent = PREMIUM_YEARLY_PRICE.toLocaleString('en-IN');
+            document.getElementById('premium-yearly-equivalent-monthly').textContent = PREMIUM_YEARLY_EQUIVALENT_MONTHLY.toLocaleString('en-IN');
+        }
+
+        // --- Core Chatbot Functions ---
+
+        const aiResponses = [
+            {
+                trigger: ['budget', 'expense', 'spending'],
+                responses: [
+                    "Based on typical Indian household patterns, I'd recommend following the 50-30-20 rule: 50% for needs, 30% for wants, and 20% for savings. Would you like me to analyze your specific spending categories?",
+                    "I notice many families overspend on dining out and entertainment. Consider setting a monthly limit of ₹3,000-₹5,000 for these categories. What's your current spending in this area?",
+                    "For grocery shopping, try bulk buying for non-perishables during festival sales. You can save 15-20% annually. Also, compare prices on apps like BigBasket vs local stores."
+                ]
+            },
+            {
+                trigger: ['save', 'saving', 'money'],
+                responses: [
+                    "Great question! Start with these quick wins: 1) Switch to LED bulbs (save ₹500-₹800/month on electricity), 2) Use a meal planning app to reduce food waste, 3) Cancel unused subscriptions. These alone can save ₹2,000-₹3,000 monthly!",
+                    "I'd recommend building an emergency fund equal to 6 months of expenses first. For a family with ₹50,000 monthly expenses, aim for ₹3 lakh emergency fund. Start with ₹5,000/month towards this goal.",
+                    "Consider systematic investment plans (SIPs) starting with just ₹1,000/month in diversified equity funds. Even small amounts compound significantly over time!"
+                ]
+            },
+            {
+                trigger: ['investment', 'invest', 'sip'],
+                responses: [
+                    "For beginners, I suggest starting with large-cap equity funds via SIP. With your risk profile, allocate 60% equity, 30% debt, 10% gold. Start with ₹3,000/month total investment.",
+                    "PPF is excellent for tax saving with 15-year lock-in giving ~7-8% returns. Combine with ELSS funds for additional tax benefits under 80C. Max out your ₹1.5L 80C limit first.",
+                    "Real estate in tier-1 cities requires huge capital. Consider REITs instead - they give real estate exposure with better liquidity and lower entry barrier of just ₹2,000."
+                ]
+            },
+            {
+                trigger: ['emi', 'loan', 'debt'],
+                responses: [
+                    "High-interest debt like credit cards (24-36% interest) should be your priority. Pay minimum on low-interest loans like home loans (8-10%) and aggressively pay off credit card debt first.",
+                    "Consider loan consolidation if you have multiple EMIs. A personal loan at 12-15% might be cheaper than multiple credit card debts. But avoid taking new debt for consumption.",
+                    "For home loans, even a 0.5% rate reduction saves lakhs over 20 years. Keep comparing rates and consider balance transfer every 2-3 years if you find better offers."
+                ]
+            },
+            {
+                trigger: ['emergency', 'fund'],
+                responses: [
+                    "Your emergency fund should cover 6 months of essential expenses - rent, groceries, utilities, EMIs. For a ₹75,000 monthly income family, aim for ₹2-3 lakh emergency fund.",
+                    "Keep emergency funds in liquid investments: 50% in savings account, 30% in liquid funds, 20% in fixed deposits. This ensures immediate access when needed.",
+                    "Don't keep emergency funds in equity or long-term investments. The whole point is immediate liquidity during crises like job loss or medical emergencies."
+                ]
+            },
+            {
+                trigger: ['buy', 'purchase', 'shopping'],
+                responses: [
+                    "Before any purchase above ₹5,000, apply the 24-hour rule. Wait a day and ask: Do I really need this? Will I use it regularly? Can I get it cheaper elsewhere?",
+                    "For electronics, wait for festival sales (Diwali, Amazon/Flipkart sales) - you can save 20-40%. For clothes, shop end-of-season sales. For groceries, buy in bulk during offers.",
+                    "This seems like an impulse purchase. Let's check: Is this a 'need' or 'want'? If it's a want, consider waiting until next month's budget allows it. Your future self will thank you!"
+                ]
+            },
+            {
+                trigger: ['tax', 'saving', '80c'],
+                responses: [
+                    "Maximize your ₹1.5L 80C limit: PPF (₹1.5L), ELSS funds (₹1.5L), life insurance premium. Also use 80D for health insurance (₹25K for family, additional ₹50K for parents).",
+                    "Instead of traditional insurance plans with low returns (4-6%), buy term insurance + invest difference in mutual funds. You'll get better returns and tax benefits.",
+                    "Keep track of tax-saving investments by March. Last-minute investments often lead to poor choices. Start SIPs in ELSS funds from April itself."
+                ]
+            },
+            {
+                trigger: ['hello', 'hi', 'hey'],
+                responses: [
+                    "Hello! 👋 I'm your AI financial advisor. I can help you with budgeting, investments, savings strategies, and smart spending decisions. What financial challenge can I help you solve today?",
+                    "Hi there! 😊 Ready to make some smart financial decisions? I can analyze your spending, suggest savings strategies, or help you avoid impulse purchases. What's on your mind?",
+                    "Hey! Great to see you trying out Finwise's AI advisor. I'm here to help you save money and make better financial choices. What would you like to know?"
+                ]
+            }, // Added a trailing comma here for consistency and to prevent potential parsing issues.
+        ];
+
+        const fallbackResponses = [
+            "That's a great question! Based on Indian financial best practices, I'd recommend consulting with a financial advisor for personalized advice. In the meantime, focus on building an emergency fund and reducing high-interest debt.",
+            "I understand your concern. For detailed guidance on this topic, our premium AI advisor can provide more comprehensive analysis. Would you like to upgrade to get personalized recommendations?",
+            "This requires a deeper analysis of your specific situation. Our premium features include detailed budget analysis and personalized investment recommendations based on your income and goals.",
+            "That's an important financial decision! While I can provide general guidance, for specific investment advice, I'd recommend consulting our premium AI advisor which has access to real-time market data and your complete financial profile.", // Added a trailing comma here for consistency and to prevent potential parsing issues.
+        ];
+
+        /**
+         * Simulates fetching AI response, using LLM for premium users and fallback for free.
+         * For premium users, the LLM can use google_search tool.
+         * @param {string} userMessage - The message from the user.
+         * @returns {Promise<string>} - A promise that resolves to the AI's response.
+         */
+        async function getAIResponse(userMessage) {
+            const message = userMessage.toLowerCase();
+
+            // Premium user with LLM integration
+            if (premiumActive) {
+                // Prepare chat history for the LLM
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: `User financial data: ${JSON.stringify(userFinancialData)}. User query: ${userMessage}. Provide a detailed financial advice, leverage google_search if needed for real-time data or product comparison, and categorize expenses based on necessity and importance (immediate/later).` }] });
+
+                const payload = {
+                    contents: chatHistory,
+                    tools: [
+                        {
+                            functionDeclarations: [
+                                {
+                                    name: "google_search",
+                                    description: "Search Google for real-time information, product prices, market data, news, etc.",
+                                    parameters: {
+                                        type: "OBJECT",
+                                        properties: {
+                                            query: { type: "STRING", description: "The search query" }
+                                        },
+                                        required: ["query"]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                };
+
+                try {
+                    const response = await fetch(GEMINI_API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await response.json();
+
+                    if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
+                        const firstPart = result.candidates[0].content.parts[0];
+
+                        // Check if the LLM wants to call a tool
+                        if (firstPart.functionCall && firstPart.functionCall.name === "google_search") {
+                            const searchQuery = firstPart.functionCall.args.query;
+                            addMessage('ai', `Searching Google for "${searchQuery}"...`); // Show a message to the user
+                            // In a real app, you'd call a backend here to perform the Google Search
+                            // For this demo, we'll simulate a response or prompt the user.
+                            return `I would search for "${searchQuery}" to get real-time data for you. For this demo, let's assume the search results indicate relevant information. What specifically about "${searchQuery}" are you interested in?`;
+                        } else if (firstPart.text) {
+                            return firstPart.text;
+                        }
+                    }
+                    return "I'm having trouble generating a detailed response right now. Please try again or rephrase your question.";
+                } catch (error) {
+                    console.error("Error calling LLM:", error);
+                    return "I apologize, but I encountered an error while processing your request. Please try again.";
+                }
+            } else {
+                // Free user: Use hardcoded responses
+                for (let category of aiResponses) {
+                    if (category.trigger.some(trigger => message.includes(trigger))) {
+                        const responses = category.responses;
+                        return responses[Math.floor(Math.random() * responses.length)];
+                    }
+                }
+                return fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
+            }
+        }
+
+        /**
+         * Adds a message to the chat interface.
+         * @param {string} sender - 'user' or 'ai'.
+         * @param {string} message - The message text.
+         */
+        function addMessage(sender, message) {
+            const chatMessages = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            
+            if (sender === 'user') {
+                messageDiv.innerHTML = `
+                    <div class="flex items-start space-x-3 justify-end">
+                        <div class="chat-bubble-user text-white p-4 rounded-2xl rounded-tr-sm max-w-sm">
+                            <p>${message}</p>
+                        </div>
+                        <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                    </div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z"></path>
+                            </svg>
+                        </div>
+                        <div class="chat-bubble-bot text-white p-4 rounded-2xl rounded-tl-sm max-w-sm">
+                            <p>${message}</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        /**
+         * Shows the AI typing indicator in the chat.
+         */
+        function showTypingIndicator() {
+            const chatMessages = document.getElementById('chat-messages');
+            const typingDiv = document.createElement('div');
+            typingDiv.id = 'typing-indicator';
+            typingDiv.innerHTML = `
+                <div class="flex items-start space-x-3">
+                    <div class="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z"></path>
+                        </svg>
+                    </div>
+                    <div class="bg-gray-300 text-gray-600 p-4 rounded-2xl rounded-tl-sm">
+                        <div class="typing-indicator flex space-x-1">
+                            <div class="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
+                            <div class="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+                            <div class="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        /**
+         * Hides the AI typing indicator.
+         */
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typing-indicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        /**
+         * Sends a user message to the chatbot and gets an AI response.
+         */
+        async function sendMessage() {
+            const chatInput = document.getElementById('chat-input');
+            const message = chatInput.value.trim();
+            
+            if (!message) return; // Don't send empty messages
+            if (!demoActive && !premiumActive) { // Allow premium users to chat anytime
+                showCustomAlert('Please start the demo or subscribe to premium first!');
+                return;
+            }
+            
+            // Add user message
+            addMessage('user', message);
+            chatInput.value = '';
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            // Get AI response
+            const aiResponse = await getAIResponse(message);
+            
+            // Hide typing indicator and add AI response
+            hideTypingIndicator();
+            addMessage('ai', aiResponse);
+        }
+
+        // --- Demo Timer Functions ---
+
+        /**
+         * Starts the free demo for the chatbot.
+         */
+        function startDemo() {
+            if (premiumActive) {
+                showCustomAlert("You are already a premium user! No need for demo.");
+                return;
+            }
+            demoActive = true;
+            demoTimeRemaining = 120;
+            
+            // Enable input and button
+            document.getElementById('chat-input').disabled = false;
+            document.getElementById('send-btn').disabled = false;
+            
+            // Hide start button
+            document.getElementById('start-demo-btn').style.display = 'none';
+            
+            // Start timer
+            demoTimer = setInterval(updateTimer, 1000);
+            
+            // Add welcome message
+            setTimeout(() => {
+                addMessage('ai', "🎉 Welcome to your 2-minute free trial! I'm your premium AI financial advisor. Ask me anything about budgeting, saving, investments, or smart spending. Let's make every rupee count!");
+            }, 500);
+        }
+
+        /**
+         * Updates the demo timer display.
+         */
+        function updateTimer() {
+            if (demoTimeRemaining <= 0) {
+                endDemo();
+                return;
+            }
+            
+            const minutes = Math.floor(demoTimeRemaining / 60);
+            const seconds = demoTimeRemaining % 60;
+            const timerText = `Demo Time: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('timer-text').textContent = timerText;
+            
+            demoTimeRemaining--;
+        }
+
+        /**
+         * Ends the free demo.
+         */
+        function endDemo() {
+            demoActive = false;
+            clearInterval(demoTimer);
+            
+            // Disable input and button
+            document.getElementById('chat-input').disabled = true;
+            document.getElementById('send-btn').disabled = true;
+            document.getElementById('timer-text').textContent = 'Demo Ended';
+            
+            // Add final message
+            setTimeout(() => {
+                addMessage('ai', "⏰ Your free 2-minute trial has ended! I hope you found value in our conversation. Upgrade to Premium to continue getting unlimited AI financial advice, product comparisons, and real-time market insights. Ready to transform your finances? 🚀");
+            }, 1000);
+            
+            // Show upgrade prompt (using custom alert)
+            setTimeout(() => {
+                showCustomAlert("Demo ended! Would you like to upgrade to Premium for unlimited AI advice and advanced features?", 
+                    () => document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' })
+                );
+            }, 3000);
+        }
+
+        // --- Financial Data & Dashboard Functions ---
+
+        /**
+         * Calculates total expenses from user financial data.
+         * @returns {number} The total monthly expenses.
+         */
+        function calculateTotalExpenses() {
+            return userFinancialData.emiBills +
+                   userFinancialData.rationsBill +
+                   userFinancialData.travelBill +
+                   userFinancialData.electricityBill +
+                   userFinancialData.waterBill +
+                   userFinancialData.internetBill +
+                   userFinancialData.otherExpenses;
+        }
+
+        /**
+         * Calculates the optimal emergency fund target.
+         * @returns {number} The emergency fund target.
+         */
+        function calculateEmergencyFundTarget() {
+            const essentialExpenses = userFinancialData.emiBills +
+                                    userFinancialData.rationsBill +
+                                    userFinancialData.electricityBill +
+                                    userFinancialData.waterBill +
+                                    userFinancialData.internetBill; // Assuming travel/other can be cut
+            // Standard recommendation: 6 months of essential expenses, adjusted for lifestyle
+            let multiplier = 6;
+            if (userFinancialData.lifestyle === 'frugal') multiplier = 4;
+            if (userFinancialData.lifestyle === 'luxury') multiplier = 8;
+            return essentialExpenses * multiplier;
+        }
+
+        /**
+         * Generates AI insights and expense categorization based on user data.
+         * This is a simplified, client-side simulation.
+         */
+        function generateAIInsights() {
+            const totalExpenses = calculateTotalExpenses();
+            const netSavings = userFinancialData.monthlySalary - totalExpenses - userFinancialData.monthlySavings;
+            const expenseCategoriesEl = document.getElementById('expense-categories');
+            expenseCategoriesEl.innerHTML = ''; // Clear previous entries
+
+            const expenses = [
+                { name: 'EMIs', amount: userFinancialData.emiBills, necessity: 'High', importance: 'Immediate' },
+                { name: 'Rations', amount: userFinancialData.rationsBill, necessity: 'High', importance: 'Immediate' },
+                { name: 'Travelling', amount: userFinancialData.travelBill, necessity: 'Medium', importance: 'Later' },
+                { name: 'Electricity', amount: userFinancialData.electricityBill, necessity: 'High', importance: 'Immediate' },
+                { name: 'Water', amount: userFinancialData.waterBill, necessity: 'High', importance: 'Immediate' },
+                { name: 'Internet', amount: userFinancialData.internetBill, necessity: 'Medium', importance: 'Immediate' },
+                { name: 'Other Expenses', amount: userFinancialData.otherExpenses, necessity: 'Low', importance: 'Later' }
+            ];
+
+            let insights = [];
+            let potentialSavings = 0;
+
+            if (netSavings < 0) {
+                insights.push("You are currently spending more than you earn. Review your 'Other Expenses' and 'Travelling' for potential cuts.");
+            } else if (netSavings < userFinancialData.monthlySalary * 0.1) {
+                insights.push("Your savings are less than 10% of your income. Consider increasing your monthly savings for a more secure future.");
+            } else {
+                insights.push("Great job managing your finances! Your current savings rate is healthy.");
+            }
+
+            // Specific recommendations based on categories
+            if (userFinancialData.travelBill > userFinancialData.monthlySalary * 0.05 && userFinancialData.lifestyle === 'frugal') {
+                insights.push("Your travelling expenses seem high for a frugal lifestyle. Consider public transport or carpooling.");
+                potentialSavings += userFinancialData.travelBill * 0.2; // Assume 20% saving
+            }
+            if (userFinancialData.rationsBill / userFinancialData.familyMembers > 3000 && userFinancialData.dietPreference === 'veg') {
+                insights.push("Your rations bill per person is on the higher side. Look into bulk buying or meal planning to reduce costs.");
+                potentialSavings += userFinancialData.rationsBill * 0.1; // Assume 10% saving
+            }
+
+            // Display expense categorization
+            expenses.forEach(exp => {
+                const li = document.createElement('li');
+                li.textContent = `${exp.name}: ₹${exp.amount.toLocaleString('en-IN')} (Necessity: ${exp.necessity}, Importance: ${exp.importance})`;
+                expenseCategoriesEl.appendChild(li);
+            });
+
+            if (potentialSavings > 0) {
+                insights.push(`By optimizing, you could potentially save an additional ₹${potentialSavings.toLocaleString('en-IN')} per month!`);
+            }
+
+            document.getElementById('ai-summary-insights').textContent = insights.join(' ');
+        }
+
+        /**
+         * Updates the financial summary section in the dashboard and hero section.
+         */
+        function updateFinancialSummary() {
+            const totalExpenses = calculateTotalExpenses();
+            const netSavings = userFinancialData.monthlySalary - totalExpenses;
+            const emergencyFundTarget = calculateEmergencyFundTarget();
+
+            // Update Hero Section Overview
+            document.getElementById('overview-income').textContent = `₹${userFinancialData.monthlySalary.toLocaleString('en-IN')}`;
+            document.getElementById('overview-expenses').textContent = `₹${totalExpenses.toLocaleString('en-IN')}`;
+            document.getElementById('overview-savings').textContent = `₹${netSavings.toLocaleString('en-IN')}`;
+
+            // Update Dashboard Summary
+            document.getElementById('summary-income').textContent = `₹${userFinancialData.monthlySalary.toLocaleString('en-IN')}`;
+            document.getElementById('summary-expenses').textContent = `₹${totalExpenses.toLocaleString('en-IN')}`;
+            document.getElementById('summary-savings').textContent = `₹${netSavings.toLocaleString('en-IN')}`;
+            document.getElementById('emergency-fund-target').textContent = `₹${emergencyFundTarget.toLocaleString('en-IN')}`;
+
+            generateAIInsights();
+            document.getElementById('financial-summary').classList.remove('hidden');
+
+            // Simulate AI recommendation for Hero section
+            let heroRecommendation = "AI Recommendation: Provide your data for insights!";
+            if (userFinancialData.monthlySalary > 0) {
+                if (netSavings < userFinancialData.monthlySalary * 0.1) {
+                    heroRecommendation = `AI Recommendation: You can save more! Target is ₹${(userFinancialData.monthlySalary * 0.2).toLocaleString('en-IN')}.`;
+                } else if (netSavings < emergencyFundTarget * 0.5 / 6) { // Check if monthly savings are low towards emergency fund
+                    heroRecommendation = `AI Recommendation: Boost your emergency fund (target ₹${emergencyFundTarget.toLocaleString('en-IN')}).`;
+                } else {
+                    heroRecommendation = `AI Recommendation: You are doing well! Keep saving and investing wisely.`;
+                }
+            }
+            document.getElementById('overview-ai-recommendation').textContent = heroRecommendation;
+        }
+
+        /**
+         * Handles the submission of the financial data form.
+         * @param {Event} event - The form submission event.
+         */
+        document.getElementById('financial-data-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Collect data from the form
+            userFinancialData.monthlySalary = parseFloat(document.getElementById('monthlySalary').value) || 0;
+            userFinancialData.emiBills = parseFloat(document.getElementById('emiBills').value) || 0;
+            userFinancialData.monthlySavings = parseFloat(document.getElementById('monthlySavings').value) || 0;
+            userFinancialData.rationsBill = parseFloat(document.getElementById('rationsBill').value) || 0;
+            userFinancialData.travelBill = parseFloat(document.getElementById('travelBill').value) || 0;
+            userFinancialData.electricityBill = parseFloat(document.getElementById('electricityBill').value) || 0;
+            userFinancialData.waterBill = parseFloat(document.getElementById('waterBill').value) || 0;
+            userFinancialData.internetBill = parseFloat(document.getElementById('internetBill').value) || 0;
+            userFinancialData.otherExpenses = parseFloat(document.getElementById('otherExpenses').value) || 0;
+            userFinancialData.familyMembers = parseInt(document.getElementById('familyMembers').value) || 1;
+            userFinancialData.dietPreference = document.getElementById('dietPreference').value;
+            userFinancialData.lifestyle = document.getElementById('lifestyle').value;
+
+            // Save to local storage (for client-side persistence)
+            localStorage.setItem('userFinancialData', JSON.stringify(userFinancialData));
+
+            // Update the UI with the new data
+            updateFinancialSummary();
+            showCustomAlert('Your financial data has been saved and analyzed!');
+        });
+
+        // Initialize form with stored data
+        function loadFinancialDataToForm() {
+            if (userFinancialData.monthlySalary > 0) { // Check if data exists
+                document.getElementById('monthlySalary').value = userFinancialData.monthlySalary;
+                document.getElementById('emiBills').value = userFinancialData.emiBills;
+                document.getElementById('monthlySavings').value = userFinancialData.monthlySavings;
+                document.getElementById('rationsBill').value = userFinancialData.rationsBill;
+                document.getElementById('travelBill').value = userFinancialData.travelBill;
+                document.getElementById('electricityBill').value = userFinancialData.electricityBill;
+                document.getElementById('waterBill').value = userFinancialData.waterBill;
+                document.getElementById('internetBill').value = userFinancialData.internetBill;
+                document.getElementById('otherExpenses').value = userFinancialData.otherExpenses;
+                document.getElementById('familyMembers').value = userFinancialData.familyMembers;
+                document.getElementById('dietPreference').value = userFinancialData.dietPreference;
+                document.getElementById('lifestyle').value = userFinancialData.lifestyle;
+                updateFinancialSummary(); // Also update summary if data is pre-filled
+            }
+        }
+
+        // --- Premium Feature Functions (Product Comparison & Market Insights) ---
+
+        /**
+         * Fetches product comparison data using LLM and Google Search (simulated).
+         */
+        document.getElementById('compare-products-btn').addEventListener('click', async function() {
+            if (!premiumActive) {
+                showCustomAlert("This is a Premium feature. Please upgrade to access product comparisons.");
+                return;
+            }
+
+            const productQuery = document.getElementById('product-search-input').value.trim();
+            const resultsDiv = document.getElementById('product-comparison-results');
+            const loadingIndicator = document.getElementById('product-comparison-loading');
+
+            if (!productQuery) {
+                resultsDiv.innerHTML = "Please enter a product to compare.";
+                return;
+            }
+
+            resultsDiv.innerHTML = ''; // Clear previous results
+            loadingIndicator.classList.remove('hidden');
+
+            const prompt = `Find the minimal priced products for "${productQuery}" across different brands in India. Provide a concise comparison of 3-5 options including estimated price, key features, and brand. Use google_search to get real-time market data.`;
+            let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+
+            const payload = {
+                contents: chatHistory,
+                tools: [{
+                    functionDeclarations: [{
+                        name: "google_search",
+                        description: "Search Google for product prices and comparisons.",
+                        parameters: {
+                            type: "OBJECT",
+                            properties: { query: { type: "STRING" } },
+                            required: ["query"]
+                        }
+                    }]
+                }]
+            };
+
+            try {
+                const response = await fetch(GEMINI_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
+                    const firstPart = result.candidates[0].content.parts[0];
+                    if (firstPart.functionCall && firstPart.functionCall.name === "google_search") {
+                        const searchQuery = firstPart.functionCall.args.query;
+                        // Simulate search result: In a real app, call your backend with searchQuery
+                        const simulatedSearchResult = `I searched for "${searchQuery}" and found:
+                        <ul class="list-disc list-inside text-left mx-auto max-w-md mt-4">
+                            <li>Brand A ${productQuery} - Approx ₹15,000 (Basic features, 3-star rating)</li>
+                            <li>Brand B ${productQuery} - Approx ₹18,500 (Mid-range, energy efficient, 4-star rating)</li>
+                            <li>Brand C ${productQuery} - Approx ₹22,000 (Advanced features, smart connectivity, 5-star rating)</li>
+                        </ul>
+                        Consider visiting local stores or e-commerce websites like Amazon.in or Flipkart to verify current prices.`;
+                        resultsDiv.innerHTML = simulatedSearchResult;
+                    } else if (firstPart.text) {
+                        resultsDiv.innerHTML = firstPart.text;
+                    } else {
+                        resultsDiv.innerHTML = "Could not get product comparison. Please try a different query.";
+                    }
+                } else {
+                    resultsDiv.innerHTML = "Error: No valid response from AI for product comparison. Ensure your query is clear.";
+                }
+            } catch (error) {
+                console.error("Error fetching product comparison:", error);
+                resultsDiv.innerHTML = "An error occurred while comparing products. Please try again later.";
+            } finally {
+                loadingIndicator.classList.add('hidden');
+            }
+        });
+
+        /**
+         * Fetches real-time market data using LLM and Google Search (simulated).
+         */
+        document.getElementById('fetch-market-data-btn').addEventListener('click', async function() {
+            if (!premiumActive) {
+                showCustomAlert("This is a Premium feature. Please upgrade to access real-time market insights.");
+                return;
+            }
+
+            const marketQuery = document.getElementById('market-search-input').value.trim();
+            const resultsDiv = document.getElementById('market-data-results');
+            const loadingIndicator = document.getElementById('market-data-loading');
+
+            if (!marketQuery) {
+                resultsDiv.innerHTML = "Please enter a market item (e.g., 'gold price India', 'Sensex today').";
+                return;
+            }
+
+            resultsDiv.innerHTML = ''; // Clear previous results
+            loadingIndicator.classList.remove('hidden');
+
+            const prompt = `Get real-time market data for "${marketQuery}" in India. Provide current values, trends, and a brief explanation. Use google_search to get real-time data.`;
+            let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+
+            const payload = {
+                contents: chatHistory,
+                tools: [{
+                    functionDeclarations: [{
+                        name: "google_search",
+                        description: "Search Google for real-time market data.",
+                        parameters: {
+                            type: "OBJECT",
+                            properties: { query: { type: "STRING" } },
+                            required: ["query"]
+                        }
+                    }]
+                }]
+            };
+
+            try {
+                const response = await fetch(GEMINI_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
+                    const firstPart = result.candidates[0].content.parts[0];
+                    if (firstPart.functionCall && firstPart.functionCall.name === "google_search") {
+                        const searchQuery = firstPart.functionCall.args.query;
+                        // Simulate search result: In a real app, call your backend with searchQuery
+                        const simulatedSearchResult = `I searched for "${searchQuery}" and found the following simulated real-time data:
+                        <ul class="list-disc list-inside text-left mx-auto max-w-md mt-4">
+                            <li>Gold Price (24K, 10g): ₹72,500 (Up by 0.3% today)</li>
+                            <li>Sensex: 78,900 (Down by 150 points)</li>
+                            <li>SBI Interest Rate (Savings): 2.70% (Unchanged)</li>
+                        </ul>
+                        Please note: Actual real-time data would be fetched from live APIs. This is a simulation for demonstration.`;
+                        resultsDiv.innerHTML = simulatedSearchResult;
+                    } else if (firstPart.text) {
+                        resultsDiv.innerHTML = firstPart.text;
+                    } else {
+                        resultsDiv.innerHTML = "Could not retrieve market data. Please try a different query.";
+                    }
+                } else {
+                    resultsDiv.innerHTML = "Error: No valid response from AI for market insights. Ensure your query is clear.";
+                }
+            } catch (error) {
+                console.error("Error fetching market data:", error);
+                resultsDiv.innerHTML = "An error occurred while fetching market data. Please try again later.";
+            } finally {
+                loadingIndicator.classList.add('hidden');
+            }
+        });
+
+
+        // --- Payment Modal Functions ---
+
+        /**
+         * Opens the payment modal for a selected plan.
+         * @param {string} planType - 'monthly' or 'yearly'.
+         */
+        function openPaymentModal(planType) {
+            const modal = document.getElementById('paymentModal');
+            const planText = document.getElementById('payment-plan-text');
+            const amountSpan = document.getElementById('payment-amount');
+            let amount = 0;
+            let planName = "";
+
+            if (planType === 'monthly') {
+                amount = PREMIUM_MONTHLY_PRICE;
+                planName = "Premium Monthly";
+            } else if (planType === 'yearly') {
+                amount = PREMIUM_YEARLY_PRICE;
+                planName = "Premium Yearly";
+            }
+
+            planText.textContent = planName;
+            amountSpan.textContent = `₹${amount.toLocaleString('en-IN')}`;
+            modal.classList.add('show');
+            // This is where you might trigger a real payment gateway in a production app.
+            // For now, it's a display of payment options.
+        }
+
+        /**
+         * Closes the payment modal.
+         */
+        function closePaymentModal() {
+            const modal = document.getElementById('paymentModal');
+            modal.classList.remove('show');
+        }
+
+        // --- Sponsorship Pop-up (Commented Out - Revenue Model) ---
+
+        // /**
+        //  * Shows a simulated sponsorship pop-up.
+        //  * This function would typically be triggered by backend logic
+        //  * or after certain user interactions, but is commented out for initial deployment.
+        //  */
+        // function showSponsorshipPopup() {
+        //     const sponsorDeals = [
+        //         {
+        //             brand: 'BlinkIt',
+        //             message: 'Get 20% off on your next 3 grocery orders with BlinkIt! Use code: FINWISE20',
+        //             image: 'https://placehold.co/100x100/ADD8E6/000000?text=BlinkIt',
+        //             link: 'https://www.blinkit.com/'
+        //         },
+        //         {
+        //             brand: 'Zepto',
+        //             message: 'Flat ₹100 cashback on orders above ₹499 with Zepto! Valid for new users.',
+        //             image: 'https://placehold.co/100x100/90EE90/000000?text=Zepto',
+        //             link: 'https://www.zeptonow.com/'
+        //         }
+        //     ];
+        //     const randomDeal = sponsorDeals[Math.floor(Math.random() * sponsorDeals.length)];
+
+        //     const sponsorshipModal = document.createElement('div');
+        //     sponsorshipModal.className = 'modal show'; // Re-use modal styling
+        //     sponsorshipModal.innerHTML = `
+        //         <div class="modal-content text-center">
+        //             <span class="close-button" onclick="this.parentElement.parentElement.remove()">&times;</span>
+        //             <h3 class="text-2xl font-bold gradient-text mb-4">Sponsored Deal!</h3>
+        //             <img src="${randomDeal.image}" alt="${randomDeal.brand}" class="mx-auto my-4 rounded-xl">
+        //             <p class="text-gray-700 text-lg mb-4">${randomDeal.message}</p>
+        //             <a href="${randomDeal.link}" target="_blank" class="bg-gradient-to-r from-green-500 to-teal-500 text-white px-6 py-3 rounded-full font-semibold hover:shadow-lg transition-all">
+        //                 Grab Deal Now!
+        //             </a>
+        //             <p class="text-xs text-gray-500 mt-4">This is a sponsored advertisement.</p>
+        //         </div>
+        //     `;
+        //     document.body.appendChild(sponsorshipModal);
+        // }
+        // Uncomment the line below to test sponsorship pop-ups after a delay
+        // setTimeout(showSponsorshipPopup, 15000); // Shows a pop-up after 15 seconds
+
+
+        // --- Utility Functions ---
+
+        /**
+         * Custom alert function to replace window.alert.
+         * @param {string} message - The message to display.
+         * @param {function} [onConfirm] - Callback function to run if confirmed (only for demo prompt).
+         */
+        function showCustomAlert(message, onConfirm = null) {
+            const existingModal = document.getElementById('customAlertModal');
+            if (existingModal) existingModal.remove(); // Remove any previous alert
+
+            const alertModal = document.createElement('div');
+            alertModal.id = 'customAlertModal';
+            alertModal.className = 'modal show';
+            alertModal.innerHTML = `
+                <div class="modal-content p-8">
+                    <span class="close-button" onclick="document.getElementById('customAlertModal').remove()">&times;</span>
+                    <p class="text-xl text-gray-800 text-center mb-6">${message}</p>
+                    <div class="flex justify-center">
+                        <button class="bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition-colors" onclick="document.getElementById('customAlertModal').remove(); ${onConfirm ? 'onConfirm();' : ''}">
+                            OK
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(alertModal);
+        }
+
+        // --- Event Listeners and Initializations ---
+
+        // Mobile menu functionality
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.remove('hidden');
+        });
+
+        document.getElementById('close-mobile-menu').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.add('hidden');
+        });
+
+        // Smooth scrolling
+        function scrollToDemo() {
+            document.getElementById('demo').scrollIntoView({ behavior: 'smooth' });
+        }
+        document.getElementById('nav-try-demo-btn').addEventListener('click', scrollToDemo);
+        document.getElementById('mobile-try-demo-btn').addEventListener('click', scrollToDemo);
+
+        // Event listeners for chat demo
+        document.getElementById('start-demo-btn').addEventListener('click', startDemo);
+        document.getElementById('send-btn').addEventListener('click', sendMessage);
+        document.getElementById('chat-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Toggle Premium Status for Dev
+        document.getElementById('premium-toggle-btn').addEventListener('click', togglePremiumStatus);
+        document.getElementById('mobile-premium-toggle-btn').addEventListener('click', togglePremiumStatus);
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+                // Close mobile menu if open
+                document.getElementById('mobile-menu').classList.add('hidden');
+            });
+        });
+
+        // Add some interactive demo suggestions
+        function addSuggestionButtons() {
+            const suggestions = [
+                "How can I save ₹5,000 monthly?",
+                "Should I invest in SIP or FD?",
+                "Help me with my budget planning",
+                "Is buying a car a good idea now?"
+            ];
+            
+            const chatMessages = document.getElementById('chat-messages');
+            const suggestionDiv = document.createElement('div');
+            suggestionDiv.className = 'p-4';
+            suggestionDiv.innerHTML = `
+                <p class="text-sm text-gray-600 mb-3">💡 Try asking these questions:</p>
+                <div class="flex flex-wrap gap-2">
+                    ${suggestions.map(suggestion => 
+                        `<button class="suggestion-btn bg-blue-100 text-blue-700 px-3 py-2 rounded-full text-sm hover:bg-blue-200 transition-colors" data-suggestion="${suggestion}">${suggestion}</button>`
+                    ).join('')}
+                </div>
+            `;
+            chatMessages.appendChild(suggestionDiv);
+            
+            // Add click handlers for suggestion buttons
+            suggestionDiv.querySelectorAll('.suggestion-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (!demoActive && !premiumActive) {
+                        showCustomAlert('Please start the demo or subscribe to premium first!');
+                        return;
+                    }
+                    document.getElementById('chat-input').value = this.dataset.suggestion;
+                    sendMessage();
+                    suggestionDiv.remove(); // Remove suggestions after first use
+                });
+            });
+        }
+
+        // Initialize on page load
+        window.onload = function() {
+            populatePricing();
+            updatePremiumUI();
+            loadFinancialDataToForm(); // Load existing financial data
+            // Add suggestion buttons after initial load
+            setTimeout(addSuggestionButtons, 1000);
+        };
+    </script>
+</body>
+</html>
